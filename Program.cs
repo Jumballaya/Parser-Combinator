@@ -7,12 +7,13 @@ namespace Calc
     {
         static void Main(string[] args)
         {       
-            Console.WriteLine("\nExample 1:\n");
-            ExampleOne();
-            Console.WriteLine("\nExample 2:\n");
-            ExampleTwo();
-            Console.WriteLine("\nExample 3:\n");
-            ExampleThree();
+            // Console.WriteLine("\nExample 1:\n");
+            // ExampleOne();
+            // Console.WriteLine("\nExample 2:\n");
+            // ExampleTwo();
+            // Console.WriteLine("\nExample 3:\n");
+            // ExampleThree();
+            Calculator.Evaluate("10");
         }
 
         static void ExampleOne()

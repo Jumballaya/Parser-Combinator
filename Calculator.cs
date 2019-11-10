@@ -1,15 +1,19 @@
-using System.Collections.Generic;
+using System;
 
 namespace Calc
 {
     public static class Calculator
     {
-        static int Evaluate(string input)
+        public static void Evaluate(string input)
         {
             Parser<string, int> parser = Util.StringParser("10").Map((string i) => int.Parse(i));
 
-            
-            return parser.Run(input).result;
+            State<int> res = parser.Run(input);
+            if (res.isError) {
+                Console.WriteLine("Error: " + res.error);
+            } else {
+                Console.WriteLine("Answer: " + res.result);
+            }
         }
     }
 }
