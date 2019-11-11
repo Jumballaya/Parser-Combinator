@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Calc
 {
@@ -13,7 +14,8 @@ namespace Calc
             // ExampleTwo();
             // Console.WriteLine("\nExample 3:\n");
             // ExampleThree();
-            Calculator.Evaluate("10");
+            Calculator c = new Calculator();
+            c.Evaluate("10");
         }
 
         static void ExampleOne()
