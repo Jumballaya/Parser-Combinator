@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Calc
 {
@@ -28,6 +29,58 @@ namespace Calc
                 return new State<string>(state.target, state.index, "", errMsg, true);
             };
             return new Parser<string,string>(str);
+        }
+
+        // Parses letters
+        static public Parser<string, string> LetterParser()
+        {
+            Func<State<string>,State<string>> letters = (State<string> state) => {
+                if (state.index >= state.target.Length) {
+                    return new State<string>(state, "Unexpected end of input on index " + state.index);
+                }
+                if (state.isError) {
+                    return new State<string>(state.target, state.index, "", state.error, state.isError);
+                }
+                string sliced = state.target.Substring(state.index);
+                if (sliced.Length == 0) {
+                    string msg = "Tried to match letters but got unexpected end of input.";
+                    return new State<string>(state.target, state.index, "", msg, true);
+                }
+                string pattern = @"^[A-Za-z]*";
+                Regex rg = new Regex(pattern);
+                MatchCollection matches = rg.Matches(sliced);
+                if (matches[0].Length > 0) {
+                    return new State<string>(state, state.index + matches[0].Length, matches[0].Value);
+                }
+                return new State<string>(state, "Couldn't match letters at index " + state.index);
+            };
+            return new Parser<string, string>(letters);
+        }
+
+        // Parses digits
+        static public Parser<string, string> DigitParser()
+        {
+            Func<State<string>,State<string>> digits = (State<string> state) => {
+                if (state.index >= state.target.Length) {
+                    return new State<string>(state, "Unexpected end of input on index " + state.index);
+                }
+                if (state.isError) {
+                    return new State<string>(state.target, state.index, "", state.error, state.isError);
+                }
+                string sliced = state.target.Substring(state.index);
+                if (sliced.Length == 0) {
+                    string msg = "Tried to match digits but got unexpected end of input.";
+                    return new State<string>(state.target, state.index, "", msg, true);
+                }
+                string pattern = @"^[0-9]*";
+                Regex rg = new Regex(pattern);
+                MatchCollection matches = rg.Matches(sliced);
+                if (matches[0].Length > 0) {
+                    return new State<string>(state, state.index + matches[0].Length, matches[0].Value);
+                }
+                return new State<string>(state, "Couldn't match digits at index " + state.index);
+            };
+            return new Parser<string, string>(digits);
         }
 
         // Parses in order of parser list
