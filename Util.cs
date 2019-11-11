@@ -181,5 +181,14 @@ namespace Calc
                 return SequenceOf(parsers).Map(trim);
             };
         }
+
+        // Lazily evaluate a parser
+        static public Parser<T,A> Lazy<T,A>(Func<Parser<T,A>> thunk)
+        {
+            return new Parser<T,A>((State<T> state) => {
+                Parser<T,A> parser = thunk();
+                return parser.tformFn(state);
+            });
+        }
     }
 }
